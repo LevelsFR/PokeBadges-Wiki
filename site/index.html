@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="PokeBadges v2 documentation for Minecraft 1.21.1, including Badge Box progression, commands, configuration, integration API and server-side events.">
+  <title>PokeBadges v2 Documentation</title>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <button class="menu-button" id="menuButton" type="button" aria-label="Open navigation">☰</button>
+
+    <a class="brand" href="#overview" data-tab-link="overview">
+      <span class="brand-mark">PB</span>
+      <span class="brand-copy">
+        <strong>PokeBadges</strong>
+        <small>v2 Documentation</small>
+      </span>
+    </a>
+
+    <div class="search-wrap">
+      <span class="search-icon" aria-hidden="true"></span>
+      <input id="wikiSearch" type="search" placeholder="Search the documentation..." autocomplete="off">
+      <kbd>Ctrl K</kbd>
+      <div class="search-results" id="searchResults" hidden></div>
+    </div>
+
+    <a class="community-badge bisecthosting-badge" href="https://www.bisecthosting.com/OurStory" target="_blank" rel="noopener noreferrer sponsored" aria-label="Save 25% on BisectHosting servers with code OurStory">
+      <span class="community-icon bisecthosting-icon" aria-hidden="true">BH</span>
+      <span class="community-copy">
+        <strong>25% OFF Servers</strong>
+        <small>BisectHosting <span class="community-divider">•</span> Code <b>OurStory</b></small>
+      </span>
+    </a>
+
+    <a class="community-badge discord-badge" id="discordBadge" href="https://discord.gg/kb8NSTF45n" target="_blank" rel="noopener noreferrer" aria-label="Join the Our Story Network Discord">
+      <svg class="community-icon discord-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path fill="currentColor" d="M19.54 5.34A16.3 16.3 0 0 0 15.44 4l-.5 1.02a15.1 15.1 0 0 0-5.86 0L8.56 4a16.5 16.5 0 0 0-4.1 1.35C1.87 9.2 1.17 12.96 1.52 16.67a16.7 16.7 0 0 0 5.03 2.55l1.23-1.68c-.67-.25-1.3-.56-1.9-.93l.46-.36c3.67 1.69 7.65 1.69 11.28 0l.47.36c-.6.37-1.24.69-1.9.94l1.22 1.67a16.6 16.6 0 0 0 5.04-2.55c.42-4.3-.72-8.03-2.91-11.33ZM8.5 14.44c-1.1 0-2-1.01-2-2.25s.88-2.26 2-2.26c1.12 0 2.02 1.02 2 2.26 0 1.24-.88 2.25-2 2.25Zm7 0c-1.1 0-2-1.01-2-2.25s.88-2.26 2-2.26c1.12 0 2.02 1.02 2 2.26 0 1.24-.88 2.25-2 2.25Z"/>
+      </svg>
+      <span class="community-copy">
+        <strong>Discord</strong>
+        <small id="discordStats"><span class="status-dot"></span>Join the server</small>
+      </span>
+    </a>
+
+    <a class="community-badge curseforge-badge" id="curseforgeBadge" href="https://www.curseforge.com/minecraft/mc-mods/pokebadges" target="_blank" rel="noopener noreferrer" aria-label="View PokeBadges on CurseForge">
+      <span class="community-icon curseforge-icon" aria-hidden="true">CF</span>
+      <span class="community-copy">
+        <strong>CurseForge</strong>
+        <small id="curseforgeStats">PokeBadges</small>
+      </span>
+    </a>
+
+    <a class="community-badge modrinth-badge" id="modrinthBadge" href="https://modrinth.com/mod/pokebadges" target="_blank" rel="noopener noreferrer" aria-label="View PokeBadges on Modrinth">
+      <span class="community-icon modrinth-icon" aria-hidden="true">MR</span>
+      <span class="community-copy">
+        <strong>Modrinth</strong>
+        <small id="modrinthStats">PokeBadges</small>
+      </span>
+    </a>
+
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
+      <span class="theme-icon theme-icon-sun">☀</span>
+      <span class="theme-icon theme-icon-moon">☾</span>
+    </button>
+  </header>
+
+  <div class="layout">
+    <aside id="sidebar">
+      <div class="sidebar-title">Documentation</div>
+      <nav class="sidebar-navigation" aria-label="Documentation sections">
+        <a href="#overview" data-tab-link="overview" class="active">👋 Overview</a>
+        <a href="#installation" data-tab-link="installation">📦 Installation</a>
+        <a href="#badgebox" data-tab-link="badgebox">🏅 Badge Box</a>
+        <a href="#commands" data-tab-link="commands">⌨️ Commands</a>
+        <a href="#configuration" data-tab-link="configuration">⚙️ Configuration</a>
+        <a href="#api" data-tab-link="api">🔌 API</a>
+        <a href="#events" data-tab-link="events">📡 Events</a>
+        <a href="#faq" data-tab-link="faq">🛠️ FAQ</a>
+      </nav>
+
+      <div class="sidebar-section">
+        <div class="sidebar-title">Links</div>
+        <a class="sidebar-link" href="https://www.bisecthosting.com/OurStory" target="_blank" rel="noopener noreferrer sponsored">🤝 BisectHosting Partner</a>
+        <a class="sidebar-link" href="https://discord.gg/kb8NSTF45n" target="_blank" rel="noopener noreferrer">💬 Discord</a>
+        <a class="sidebar-link" href="https://www.curseforge.com/minecraft/mc-mods/pokebadges" target="_blank" rel="noopener noreferrer">🧡 CurseForge</a>
+        <a class="sidebar-link" href="https://modrinth.com/mod/pokebadges" target="_blank" rel="noopener noreferrer">🟢 Modrinth</a>
+        <a class="sidebar-link" href="https://github.com/LevelsFR/PokeBadges-Wiki" target="_blank" rel="noopener noreferrer">💻 GitHub Wiki</a>
+        <a class="sidebar-link" href="https://www.patreon.com/c/OurStoryCollection" target="_blank" rel="noopener noreferrer">❤️ Patreon</a>
+      </div>
+
+      <div class="sidebar-footer">
+        <strong>PokeBadges</strong>
+        <span>Documentation for v2.0</span>
+      </div>
+    </aside>
+
+    <main>
+      <div class="tabs" role="tablist" aria-label="Documentation tabs">
+        <button class="tab active" type="button" data-tab="overview">Overview</button>
+        <button class="tab" type="button" data-tab="installation">Installation</button>
+        <button class="tab" type="button" data-tab="badgebox">Badge Box</button>
+        <button class="tab" type="button" data-tab="commands">Commands</button>
+        <button class="tab" type="button" data-tab="configuration">Configuration</button>
+        <button class="tab" type="button" data-tab="api">API</button>
+        <button class="tab" type="button" data-tab="events">Events</button>
+        <button class="tab" type="button" data-tab="faq">FAQ</button>
+      </div>
+
+      <article>
+        <section class="tab-panel active" id="overview" data-panel="overview">
+          <div class="page-heading">
+            <span class="page-kicker">PokeBadges v2</span>
+            <h1>PokeBadges</h1>
+            <p class="page-description">A standalone Gym Badge progression system for Minecraft, designed for Cobblemon, Pixelmon, servers, adventure maps and progression-focused modpacks.</p>
+          </div>
+
+          <div class="hint hint-info">
+            <strong>This wiki targets the v2.0 codebase.</strong>
+            <p>Distribution pages may temporarily show an earlier public release until v2.0 is published.</p>
+          </div>
+
+          <h2>What does PokeBadges do?</h2>
+          <p>PokeBadges turns Gym Badges into persistent progression instead of simple collectible items. Players store badges in a dedicated Badge Box, track completion by region, keep historical backup data and can recover missing progress when server rules allow it.</p>
+
+          <ul>
+            <li>Dedicated Badge Box with a custom progression interface.</li>
+            <li>Support for Kanto, Johto, Hoenn, Sinnoh, Unova, Kalos, Galar and Paldea.</li>
+            <li>Badge metadata including region, Gym Leader, Gym type, order and obtained date.</li>
+            <li>Persistent current progress plus historical backup progress.</li>
+            <li>Server commands for awarding, auditing, restoring and clearing badge progress.</li>
+            <li>Public server-side Java API for mod and server integrations.</li>
+            <li>Server-side event callbacks for badge and region progression.</li>
+            <li>Fabric and NeoForge support on Minecraft 1.21.1.</li>
+          </ul>
+
+          <h2>Supported regions</h2>
+          <table>
+            <thead><tr><th>Region</th><th>Generation</th><th>Badge Box support</th></tr></thead>
+            <tbody>
+              <tr><td>Kanto</td><td>1</td><td>✅</td></tr>
+              <tr><td>Johto</td><td>2</td><td>✅</td></tr>
+              <tr><td>Hoenn</td><td>3</td><td>✅</td></tr>
+              <tr><td>Sinnoh</td><td>4</td><td>✅</td></tr>
+              <tr><td>Unova</td><td>5</td><td>✅ BW1 / BW2 selectable</td></tr>
+              <tr><td>Kalos</td><td>6</td><td>✅</td></tr>
+              <tr><td>Galar</td><td>8</td><td>✅</td></tr>
+              <tr><td>Paldea</td><td>9</td><td>✅</td></tr>
+            </tbody>
+          </table>
+
+          <h2>Compatibility</h2>
+          <table>
+            <thead><tr><th>Component</th><th>Requirement</th></tr></thead>
+            <tbody>
+              <tr><td>Minecraft</td><td>1.21.1</td></tr>
+              <tr><td>Java</td><td>21+</td></tr>
+              <tr><td>Fabric Loader</td><td>0.18.4+</td></tr>
+              <tr><td>Fabric API</td><td>Required on Fabric</td></tr>
+              <tr><td>NeoForge</td><td>21.1.x</td></tr>
+              <tr><td>Architectury API</td><td>13.0.8+</td></tr>
+              <tr><td>Accessories</td><td>Optional</td></tr>
+              <tr><td>Curios</td><td>Optional</td></tr>
+              <tr><td>Environment</td><td>Client + Server</td></tr>
+            </tbody>
+          </table>
+
+          <h2>Progress model</h2>
+          <ol class="process-list">
+            <li><strong>Obtain</strong><span>A badge exists as a normal PokeBadges item.</span></li>
+            <li><strong>Register</strong><span>Depositing or awarding the badge records it in the player's Badge Box.</span></li>
+            <li><strong>Backup</strong><span>The first recorded timestamp is also kept in historical backup data.</span></li>
+            <li><strong>Complete</strong><span>Finishing every required slot in a region triggers region completion.</span></li>
+          </ol>
+        </section>
+
+        <section class="tab-panel" id="installation" data-panel="installation">
+          <div class="page-heading">
+            <span class="page-kicker">Getting started</span>
+            <h1>Installation</h1>
+            <p class="page-description">Install PokeBadges on both the server and every client that needs to use the Badge Box interface.</p>
+          </div>
+
+          <h2>Fabric</h2>
+          <ul>
+            <li>PokeBadges for Fabric.</li>
+            <li>Fabric Loader 0.18.4 or newer.</li>
+            <li>Fabric API.</li>
+            <li>Architectury API 13.0.8 or newer.</li>
+            <li>Java 21 or newer.</li>
+          </ul>
+
+          <h2>NeoForge</h2>
+          <ul>
+            <li>PokeBadges for NeoForge.</li>
+            <li>NeoForge 21.1.x.</li>
+            <li>Architectury API 13.0.8 or newer.</li>
+            <li>Java 21 or newer.</li>
+          </ul>
+
+          <h2>Optional integrations</h2>
+          <p>Accessories and Curios are optional. When present, PokeBadges can detect an equipped Badge Box through those systems. No external Pokémon mod is declared as a hard dependency.</p>
+
+          <h2>Opening the Badge Box</h2>
+          <p>The Fabric default key is <code>B</code>. The normal keybind flow requires the player to own a Badge Box in the main hand, off hand, inventory, Curios slot or Accessories slot.</p>
+          <p>The physical Badge Box item can also be used directly. Server integrations may open the interface through <code>/pokebadges open</code> or the public API, depending on the server configuration.</p>
+
+          <div class="hint hint-success">
+            <strong>Server packs</strong>
+            <p>Keep the same PokeBadges version on server and client. The interface and networking are part of the mod, so PokeBadges is not a server-only installation.</p>
+          </div>
+        </section>
+
+        <section class="tab-panel" id="badgebox" data-panel="badgebox">
+          <div class="page-heading">
+            <span class="page-kicker">Player progression</span>
+            <h1>Badge Box</h1>
+            <p class="page-description">The Badge Box is the central interface for viewing current Gym Badge progress and navigating each supported region.</p>
+          </div>
+
+          <h2>Main page</h2>
+          <p>The main page displays the player's total badge progress and one navigation button for every supported region. Region buttons expose per-region progress and completion state.</p>
+
+          <h2>Region pages</h2>
+          <p>Each region page shows its active badge slots. Missing badges are rendered as silhouettes, while obtained badges display their normal item appearance.</p>
+          <p>Badge tooltips can include the region, active order, Gym Leader, Gym type, whether the badge has been obtained and the stored acquisition timestamp.</p>
+
+          <h2>Current progress and historical backup</h2>
+          <p>PokeBadges stores two related datasets for every player:</p>
+          <table>
+            <thead><tr><th>Dataset</th><th>Purpose</th></tr></thead>
+            <tbody>
+              <tr><td>Current Badge Box</td><td>The badges currently counted as the player's active progression.</td></tr>
+              <tr><td>Historical backup</td><td>Badges previously registered by the player, used for audit and restore operations.</td></tr>
+            </tbody>
+          </table>
+
+          <p>Removing a badge through the public remove operation only removes it from current progress. Its historical backup remains available. Full administrative clear commands remove both current and backup data for their scope.</p>
+
+          <h2>Unova mode</h2>
+          <p>Unova has two selectable badge sets:</p>
+          <ul>
+            <li><code>black_white_1</code> for Black / White 1.</li>
+            <li><code>black_white_2</code> for Black / White 2.</li>
+          </ul>
+          <p>Only the selected set counts as active region progression. Disabled Unova badges can optionally be hidden from the creative tab.</p>
+
+          <h2>Withdrawal rules</h2>
+          <p>Badges can only be withdrawn from the Badge Box when both <code>lock_badges_in_badge_box=false</code> and <code>strict_badge_mode=false</code>. The default configuration keeps Badge Box badges locked.</p>
+        </section>
+
+        <section class="tab-panel" id="commands" data-panel="commands">
+          <div class="page-heading">
+            <span class="page-kicker">Players & administration</span>
+            <h1>Commands</h1>
+            <p class="page-description">PokeBadges provides player utilities plus permission-level 2 administration commands.</p>
+          </div>
+
+          <h2>Player commands</h2>
+          <div class="command"><code>/pokebadges info</code><p>Shows the active server configuration relevant to Badge Box behavior.</p></div>
+          <div class="command"><code>/pokebadges open</code><p>Opens the Badge Box through the external-open path. Whether a physical Badge Box is required is controlled by <code>external_open_requires_badge_box</code>.</p></div>
+          <div class="command"><code>/pokebadges backup</code><p>Restores badges that exist in historical backup but are missing from current progress. The default cooldown is 30 seconds.</p></div>
+          <div class="command"><code>/pokebadges missing [region]</code><p>Lists missing active badges globally or for one region.</p></div>
+          <div class="command"><code>/pokebadges progress</code><p>Shows current and backup progression for the executing player.</p></div>
+
+          <h2>Admin commands</h2>
+          <div class="command"><code>/pokebadges progress &lt;player&gt;</code><p>Shows progression for another player. Requires permission level 2.</p></div>
+          <div class="command"><code>/pokebadges reload</code><p>Reloads the server configuration from disk. Requires permission level 2.</p></div>
+          <div class="command"><code>/pokebadges admin audit &lt;player&gt;</code><p>Compares current progression with historical backup and reports differences.</p></div>
+          <div class="command"><code>/pokebadges admin restore &lt;player&gt;</code><p>Restores missing current badges from the player's historical backup.</p></div>
+          <div class="command"><code>/pokebadges admin open &lt;targets&gt;</code><p>Opens the Badge Box for one or more players through the external-open path.</p></div>
+          <div class="command"><code>/pokebadges admin award &lt;targets&gt; &lt;badge&gt;</code><p>Directly registers a badge in current progress and historical backup. This is the progression-safe command for integrations and staff rewards.</p></div>
+          <div class="command"><code>/pokebadges give &lt;targets&gt; &lt;badge&gt;</code><p>Gives the physical badge item to player inventory. It does not directly register Badge Box progression.</p></div>
+          <div class="command"><code>/pokebadges give_region &lt;targets&gt; &lt;region&gt;</code><p>Directly awards every active badge in the selected region to the target players.</p></div>
+          <div class="command"><code>/pokebadges clear &lt;targets&gt;</code><p>Clears all current and historical backup badge data for the target players.</p></div>
+          <div class="command"><code>/pokebadges clear_region &lt;targets&gt; &lt;region&gt;</code><p>Clears current and historical backup data for one region.</p></div>
+
+          <h2>Accepted badge IDs</h2>
+          <p>Badge arguments accept either the full identifier such as <code>pokebadges:toxic_unova_badge</code> or the short path <code>toxic_unova_badge</code>. Command suggestions use the shorter form.</p>
+        </section>
+
+        <section class="tab-panel" id="configuration" data-panel="configuration">
+          <div class="page-heading">
+            <span class="page-kicker">Server & client settings</span>
+            <h1>Configuration</h1>
+            <p class="page-description">PokeBadges uses separate server and client configuration files under the dedicated <code>config/pokebadges</code> folder.</p>
+          </div>
+
+          <h2>Server configuration</h2>
+          <pre><code>config/pokebadges/pokebadges-server.cfg</code></pre>
+          <p>Older installs using <code>world/serverconfig/pokebadges-server.cfg</code> are detected when the new file does not exist and are migrated into the current config location.</p>
+
+          <h3>Default server configuration</h3>
+          <pre><code>// PokeBadges server config
+lock_badges_in_badge_box=true
+strict_badge_mode=false
+backup_command_cooldown_seconds=30
+unova_badge_set=black_white_2
+hide_disabled_unova_badges_in_creative_tab=false
+external_open_requires_badge_box=false</code></pre>
+
+          <table>
+            <thead><tr><th>Setting</th><th>Default</th><th>Behavior</th></tr></thead>
+            <tbody>
+              <tr><td><code>lock_badges_in_badge_box</code></td><td><code>true</code></td><td>Prevents players from withdrawing badges after storage.</td></tr>
+              <tr><td><code>strict_badge_mode</code></td><td><code>false</code></td><td>Treats Badge Box progression as permanent trophy progression and prevents withdrawal.</td></tr>
+              <tr><td><code>backup_command_cooldown_seconds</code></td><td><code>30</code></td><td>Cooldown for the player <code>/pokebadges backup</code> command. Minimum is 0.</td></tr>
+              <tr><td><code>unova_badge_set</code></td><td><code>black_white_2</code></td><td>Selects the active eight-badge Unova set. Valid values are <code>black_white_1</code> and <code>black_white_2</code>.</td></tr>
+              <tr><td><code>hide_disabled_unova_badges_in_creative_tab</code></td><td><code>false</code></td><td>Hides the inactive Unova set from creative inventory when enabled.</td></tr>
+              <tr><td><code>external_open_requires_badge_box</code></td><td><code>false</code></td><td>Controls whether commands and integration APIs need the player to physically own a Badge Box.</td></tr>
+            </tbody>
+          </table>
+
+          <h2>Client configuration</h2>
+          <pre><code>config/pokebadges/pokebadges-client.cfg</code></pre>
+          <pre><code>// PokeBadges client config
+badge_discovery_popups=true</code></pre>
+          <p><code>badge_discovery_popups</code> controls the custom first-time badge registration popup. The legacy <code>config/pokebadges-client.cfg</code> location is migrated automatically.</p>
+
+          <div class="hint hint-info">
+            <strong>Reloading</strong>
+            <p>Use <code>/pokebadges reload</code> after editing the server configuration. Client popup settings are local to each client.</p>
+          </div>
+        </section>
+
+        <section class="tab-panel" id="api" data-panel="api">
+          <div class="page-heading">
+            <span class="page-kicker">Developers</span>
+            <h1>Integration API</h1>
+            <p class="page-description">PokeBadges v2 exposes a small public server-side API so other mods and server systems can work with Badge Box progression without touching saved data directly.</p>
+          </div>
+
+          <h2>Public entry point</h2>
+          <pre><code>net.levelscraft7.pokebadges.api.PokeBadgesApi</code></pre>
+          <p>All API methods operate on a server-side <code>ServerPlayer</code>.</p>
+
+          <table>
+            <thead><tr><th>Method</th><th>Return type</th><th>Purpose</th></tr></thead>
+            <tbody>
+              <tr><td><code>openBadgeBox(player)</code></td><td><code>boolean</code></td><td>Opens the full Badge Box. Returns false if server rules require a physical Badge Box and the player does not have one.</td></tr>
+              <tr><td><code>awardBadge(player, badgeId)</code></td><td><code>BadgeOperationResult</code></td><td>Adds the badge to current progress and historical backup.</td></tr>
+              <tr><td><code>hasBadge(player, badgeId)</code></td><td><code>BadgeOperationResult</code></td><td>Returns <code>SUCCESS</code> when the player currently owns the badge.</td></tr>
+              <tr><td><code>removeBadge(player, badgeId)</code></td><td><code>BadgeOperationResult</code></td><td>Removes the badge from current progress while keeping historical backup.</td></tr>
+              <tr><td><code>restoreBadge(player, badgeId)</code></td><td><code>BadgeOperationResult</code></td><td>Restores a badge from historical backup into current progress.</td></tr>
+              <tr><td><code>getOwnedBadges(player)</code></td><td><code>Set&lt;ResourceLocation&gt;</code></td><td>Returns current owned badge IDs.</td></tr>
+              <tr><td><code>getBackupBadges(player)</code></td><td><code>Set&lt;ResourceLocation&gt;</code></td><td>Returns historical backup badge IDs.</td></tr>
+              <tr><td><code>isRegionCompleted(player, regionId)</code></td><td><code>BadgeOperationResult</code></td><td>Returns <code>SUCCESS</code> when every active badge slot in the region is complete.</td></tr>
+            </tbody>
+          </table>
+
+          <h2>Example: award a badge</h2>
+          <pre><code>import net.levelscraft7.pokebadges.api.BadgeOperationResult;
+import net.levelscraft7.pokebadges.api.PokeBadgesApi;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+
+ResourceLocation toxicBadge = ResourceLocation.fromNamespaceAndPath(
+    "pokebadges",
+    "toxic_unova_badge"
+);
+
+BadgeOperationResult result = PokeBadgesApi.awardBadge(player, toxicBadge);
+if (result == BadgeOperationResult.SUCCESS) {
+    // Badge Box progression was updated successfully.
+}</code></pre>
+
+          <h2>Example: check a region</h2>
+          <pre><code>ResourceLocation kanto = ResourceLocation.fromNamespaceAndPath("pokebadges", "kanto");
+boolean completed = PokeBadgesApi.isRegionCompleted(player, kanto)
+    == BadgeOperationResult.SUCCESS;</code></pre>
+
+          <h2>Operation results</h2>
+          <table>
+            <thead><tr><th>Result</th><th>Meaning</th></tr></thead>
+            <tbody>
+              <tr><td><code>SUCCESS</code></td><td>The operation succeeded.</td></tr>
+              <tr><td><code>ALREADY_OWNED</code></td><td>The badge is already present in current progress.</td></tr>
+              <tr><td><code>UNKNOWN_BADGE</code></td><td>The supplied ID does not resolve to a PokeBadges badge.</td></tr>
+              <tr><td><code>UNKNOWN_REGION</code></td><td>The supplied region ID is invalid.</td></tr>
+              <tr><td><code>NOT_OWNED</code></td><td>The player does not currently own the requested badge or the region is incomplete.</td></tr>
+              <tr><td><code>NOT_IN_BACKUP</code></td><td>The requested badge cannot be restored because historical backup does not contain it.</td></tr>
+              <tr><td><code>INVALID_PLAYER</code></td><td>The supplied server player is invalid.</td></tr>
+              <tr><td><code>FAILED</code></td><td>The operation was rejected for another rule, including a badge disabled by the active Unova mode.</td></tr>
+            </tbody>
+          </table>
+
+          <h2>Integration rules</h2>
+          <ul>
+            <li>Use <code>PokeBadgesApi</code> instead of reading or modifying <code>BadgeBoxSavedData</code> directly.</li>
+            <li>Badge IDs are normal Minecraft <code>ResourceLocation</code> item IDs.</li>
+            <li>Region IDs use the <code>pokebadges</code> namespace, for example <code>pokebadges:kanto</code>.</li>
+            <li>API award, remove and restore operations emit the corresponding public event callbacks.</li>
+          </ul>
+        </section>
+
+        <section class="tab-panel" id="events" data-panel="events">
+          <div class="page-heading">
+            <span class="page-kicker">Developers</span>
+            <h1>Server-side Events</h1>
+            <p class="page-description">Integrations can subscribe to lightweight PokeBadges callbacks without depending on loader-specific event buses.</p>
+          </div>
+
+          <h2>Registration class</h2>
+          <pre><code>net.levelscraft7.pokebadges.api.event.PokeBadgesEvents</code></pre>
+
+          <table>
+            <thead><tr><th>Registration method</th><th>Event</th></tr></thead>
+            <tbody>
+              <tr><td><code>registerBadgeAwarded(...)</code></td><td><code>BadgeAwardedEvent</code></td></tr>
+              <tr><td><code>registerBadgeRemoved(...)</code></td><td><code>BadgeRemovedEvent</code></td></tr>
+              <tr><td><code>registerBadgeRestored(...)</code></td><td><code>BadgeRestoredEvent</code></td></tr>
+              <tr><td><code>registerRegionCompleted(...)</code></td><td><code>RegionCompletedEvent</code></td></tr>
+            </tbody>
+          </table>
+
+          <h2>Example listener</h2>
+          <pre><code>import net.levelscraft7.pokebadges.api.event.PokeBadgesEvents;
+
+AutoCloseable badgeListener = PokeBadgesEvents.registerBadgeAwarded(event -> {
+    var player = event.player();
+    var badgeId = event.badgeId();
+    var region = event.region();
+    var source = event.source();
+    long obtainedAt = event.obtainedAt();
+
+    // Your integration logic here.
+});
+
+// Call badgeListener.close() when your integration unloads.</code></pre>
+
+          <h2>Event payloads</h2>
+          <table>
+            <thead><tr><th>Event</th><th>Fields</th></tr></thead>
+            <tbody>
+              <tr><td><code>BadgeAwardedEvent</code></td><td><code>player</code>, <code>badgeId</code>, <code>region</code>, <code>source</code>, <code>obtainedAt</code></td></tr>
+              <tr><td><code>BadgeRemovedEvent</code></td><td><code>player</code>, <code>badgeId</code>, <code>region</code>, <code>source</code></td></tr>
+              <tr><td><code>BadgeRestoredEvent</code></td><td><code>player</code>, <code>badgeId</code>, <code>region</code>, <code>source</code>, <code>obtainedAt</code></td></tr>
+              <tr><td><code>RegionCompletedEvent</code></td><td><code>player</code>, <code>regionId</code>, <code>region</code>, <code>source</code></td></tr>
+            </tbody>
+          </table>
+
+          <h2>Action sources</h2>
+          <p><code>BadgeActionSource</code> tells integrations where the progression change originated:</p>
+          <pre><code>MANUAL_DEPOSIT
+COMMAND
+API
+RESTORE
+ADMIN
+UNKNOWN</code></pre>
+
+          <div class="hint hint-info">
+            <strong>Listener lifecycle</strong>
+            <p>Every registration method returns an <code>AutoCloseable</code>. Keep that handle and close it when your integration unloads to remove the listener cleanly.</p>
+          </div>
+        </section>
+
+        <section class="tab-panel" id="faq" data-panel="faq">
+          <div class="page-heading">
+            <span class="page-kicker">Troubleshooting</span>
+            <h1>FAQ</h1>
+            <p class="page-description">Common behavior and integration questions for players, pack authors and server administrators.</p>
+          </div>
+
+          <h2>The B key does nothing</h2>
+          <p>The normal keybind requires a Badge Box somewhere the server can detect it: main hand, off hand, inventory, Curios or Accessories. Also verify that the key has not been rebound or conflicted with another mod.</p>
+
+          <h2>Can a server open the Badge Box without giving the item?</h2>
+          <p>Yes. By default <code>external_open_requires_badge_box=false</code>, so <code>/pokebadges open</code>, admin external opens and <code>PokeBadgesApi.openBadgeBox</code> can open the interface without the physical item. Set the option to <code>true</code> to enforce ownership.</p>
+
+          <h2>What is the difference between give and award?</h2>
+          <p><code>/pokebadges give</code> gives the physical badge item. <code>/pokebadges admin award</code> records progression directly in the player's Badge Box and backup.</p>
+
+          <h2>Why can a badge not be removed from the Badge Box?</h2>
+          <p>The default server config has <code>lock_badges_in_badge_box=true</code>. Withdrawal is only available when both the lock option and strict mode are disabled.</p>
+
+          <h2>A player lost badges after a problem. What should staff do?</h2>
+          <ol>
+            <li>Run <code>/pokebadges admin audit &lt;player&gt;</code>.</li>
+            <li>If historical backup contains missing progress, run <code>/pokebadges admin restore &lt;player&gt;</code>.</li>
+            <li>Use <code>admin award</code> only when a badge must be granted independently of backup history.</li>
+          </ol>
+
+          <h2>Does PokeBadges require Cobblemon or Pixelmon?</h2>
+          <p>No hard dependency is declared for either project. PokeBadges is built as a standalone badge progression layer and is designed to fit Pokémon-focused environments.</p>
+
+          <h2>Where should integrations hook progression?</h2>
+          <p>Use <code>PokeBadgesApi</code> for writes and checks, then subscribe to <code>PokeBadgesEvents</code> when your mod needs to react to progression changes. Avoid writing directly to internal SavedData classes.</p>
+        </section>
+      </article>
+    </main>
+  </div>
+</body>
+</html>
