@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="PokeBadges v2 documentation for Minecraft 1.21.1, including Badge Box progression, commands, configuration, integration API and server-side events.">
-  <title>PokeBadges v2 Documentation</title>
+  <meta name="description" content="PokeBadges v2.1.1 documentation for Minecraft 1.21.1, including permanent acquisition records, commands, configuration and integration API.">
+  <title>PokeBadges v2.1.1 Documentation</title>
   <link rel="stylesheet" href="styles.css">
   <script defer src="app.js"></script>
 </head>
@@ -16,7 +16,7 @@
       <span class="brand-mark">PB</span>
       <span class="brand-copy">
         <strong>PokeBadges</strong>
-        <small>v2 Documentation</small>
+        <small>v2.1.1 Documentation</small>
       </span>
     </a>
 
@@ -93,7 +93,7 @@
 
       <div class="sidebar-footer">
         <strong>PokeBadges</strong>
-        <span>Documentation for v2.0</span>
+        <span>Documentation for v2.1.1</span>
       </div>
     </aside>
 
@@ -112,14 +112,14 @@
       <article>
         <section class="tab-panel active" id="overview" data-panel="overview">
           <div class="page-heading">
-            <span class="page-kicker">PokeBadges v2</span>
+            <span class="page-kicker">PokeBadges v2.1.1</span>
             <h1>PokeBadges</h1>
             <p class="page-description">A standalone Gym Badge progression system for Minecraft, designed for Cobblemon, Pixelmon, servers, adventure maps and progression-focused modpacks.</p>
           </div>
 
           <div class="hint hint-info">
-            <strong>This wiki targets the v2.0 codebase.</strong>
-            <p>Distribution pages may temporarily show an earlier public release until v2.0 is published.</p>
+            <strong>This wiki documents the v2.1.1 development branch.</strong>
+            <p>CurseForge and Modrinth may continue to show the earlier public release until v2.1.1 is published.</p>
           </div>
 
           <h2>What does PokeBadges do?</h2>
@@ -128,7 +128,8 @@
           <ul>
             <li>Dedicated Badge Box with a custom progression interface.</li>
             <li>Support for Kanto, Johto, Hoenn, Sinnoh, Unova, Kalos, Galar and Paldea.</li>
-            <li>Badge metadata including region, Gym Leader, Gym type, order and obtained date.</li>
+            <li>Badge details include region, Gym Leader, Gym type, order and the first known acquisition date and origin.</li>
+            <li>Permanent acquisition records are stored separately from the recent operation history.</li>
             <li>Persistent current progress plus historical backup progress.</li>
             <li>Server commands for awarding, auditing, restoring and clearing badge progress.</li>
             <li>Public server-side Java API for mod and server integrations.</li>
@@ -159,7 +160,7 @@
               <tr><td>Java</td><td>21+</td></tr>
               <tr><td>Fabric Loader</td><td>0.18.4+</td></tr>
               <tr><td>Fabric API</td><td>Required on Fabric</td></tr>
-              <tr><td>NeoForge</td><td>21.1.x</td></tr>
+              <tr><td>NeoForge</td><td>21.1.262 or newer in the 21.1 line</td></tr>
               <tr><td>Architectury API</td><td>13.0.8+</td></tr>
               <tr><td>Accessories</td><td>Optional</td></tr>
               <tr><td>Curios</td><td>Optional</td></tr>
@@ -167,11 +168,16 @@
             </tbody>
           </table>
 
+          <div class="hint hint-info">
+            <strong>NeoForge compatibility</strong>
+            <p>PokeBadges requires NeoForge 21.1.262 or newer within the 21.1 line. This version includes the upstream fix for malformed network setup payloads that could exhaust memory. If another optional mod requires owo-lib on NeoForge 1.21.1, use owo-lib 0.12.15.6-beta.1 or a compatible newer build. PokeBadges itself does not depend on owo-lib. See the <a href="https://github.com/neoforged/NeoForge/security/advisories/GHSA-xmvj-vxj4-4846" target="_blank" rel="noopener noreferrer">NeoForge advisory</a> and <a href="https://github.com/wisp-forest/owo-lib/blob/1.21-Neo/src/main/java/io/wispforest/owo/mixin/neoforge/NetworkRegistryMixin.java" target="_blank" rel="noopener noreferrer">owo-lib compatibility source</a>.</p>
+          </div>
+
           <h2>Progress model</h2>
           <ol class="process-list">
             <li><strong>Obtain</strong><span>A badge exists as a normal PokeBadges item.</span></li>
             <li><strong>Register</strong><span>Depositing or awarding the badge records it in the player's Badge Box.</span></li>
-            <li><strong>Backup</strong><span>The first recorded timestamp is also kept in historical backup data.</span></li>
+            <li><strong>Backup</strong><span>Recovery data is stored separately from the permanent first-acquisition record and recent event journal.</span></li>
             <li><strong>Complete</strong><span>Finishing every required slot in a region triggers region completion.</span></li>
           </ol>
         </section>
@@ -195,13 +201,14 @@
           <h2>NeoForge</h2>
           <ul>
             <li>PokeBadges for NeoForge.</li>
-            <li>NeoForge 21.1.x.</li>
+            <li>NeoForge 21.1.262 or newer in the 21.1 line.</li>
             <li>Architectury API 13.0.8 or newer.</li>
             <li>Java 21 or newer.</li>
           </ul>
 
           <h2>Optional integrations</h2>
-          <p>Accessories and Curios are optional. When present, PokeBadges can detect an equipped Badge Box through those systems. No external Pokémon mod is declared as a hard dependency.</p>
+          <p>Accessories, Curios, Cobblemon and Fancy Toasts remain optional. PokeBadges does not assign badges after generic Cobblemon battles. An arena or quest integration must validate its own server-side condition before using the API or award command.</p>
+          <p>When another NeoForge mod requires owo-lib on Minecraft 1.21.1, use owo-lib 0.12.15.6-beta.1 or a compatible newer build with NeoForge 21.1.262.</p>
 
           <h2>Opening the Badge Box</h2>
           <p>The Fabric default key is <code>B</code>. The normal keybind flow requires the player to own a Badge Box in the main hand, off hand, inventory, Curios slot or Accessories slot.</p>
@@ -225,7 +232,8 @@
 
           <h2>Region pages</h2>
           <p>Each region page shows its active badge slots. Missing badges are rendered as silhouettes, while obtained badges display their normal item appearance.</p>
-          <p>Badge tooltips can include the region, active order, Gym Leader, Gym type, whether the badge has been obtained and the stored acquisition timestamp.</p>
+          <p>Badge tooltips can include the region, active order, Gym Leader, Gym type, whether the badge has been obtained and the first known acquisition date and origin. Unknown dates are identified as unknown, and technical origin identifiers are shown with a localized description.</p>
+          <p>First-acquisition metadata is separate from the recent event journal. History cleanup, badge withdrawal, restoration and administrative clearing do not replace it. A clear is recorded in history only when the configured history limit is greater than zero.</p>
 
           <h2>Current progress and historical backup</h2>
           <p>PokeBadges stores two related datasets for every player:</p>
@@ -237,7 +245,11 @@
             </tbody>
           </table>
 
-          <p>Removing a badge through the public remove operation only removes it from current progress. Its historical backup remains available. Full administrative clear commands remove both current and backup data for their scope.</p>
+          <p>Removing a badge through the public remove operation only removes it from current progress. Its recovery backup remains available. <code>/pokebadges admin clear</code> and <code>/pokebadges admin clear_region</code> remove current and backup data in their scope while keeping permanent first-acquisition metadata.</p>
+
+          <h2>Migration from v2.1</h2>
+          <p>Version 2.1.1 writes saved-data format 3 and keeps player UUIDs, current badges, recovery backups, known timestamps, recent history and data found in other dimensions. It restores provenance from a v2.1 award or deposit event only when the event's positive obtained timestamp matches the earliest known current or backup timestamp. Missing or unmatched values stay unknown.</p>
+          <p>Older versions do not preserve the new acquisition metadata if they save the world after a downgrade. Back up the world before downgrading.</p>
 
           <h2>Unova mode</h2>
           <p>Unova has two selectable badge sets:</p>
@@ -271,11 +283,14 @@
           <div class="command"><code>/pokebadges admin audit &lt;player&gt;</code><p>Compares current progression with historical backup and reports differences.</p></div>
           <div class="command"><code>/pokebadges admin restore &lt;player&gt;</code><p>Restores missing current badges from the player's historical backup.</p></div>
           <div class="command"><code>/pokebadges admin open &lt;targets&gt;</code><p>Opens the Badge Box for one or more players through the external-open path.</p></div>
-          <div class="command"><code>/pokebadges admin award &lt;targets&gt; &lt;badge&gt;</code><p>Directly registers a badge in current progress and historical backup. This is the progression-safe command for integrations and staff rewards.</p></div>
+          <div class="command"><code>/pokebadges admin award &lt;targets&gt; &lt;badge&gt; [origin] [integration_reference]</code><p>Directly registers an official badge in current progress and recovery backup. Optional origin and integration reference are recorded as provenance. The command requires permission level 2; its original two-argument form still works.</p></div>
+          <pre><code># Datapack function, such as an advancement reward function
+pokebadges admin award @s boulder_kanto_badge cities:kanto_pewter cities:pewter_gym</code></pre>
+          <p>The function source needs <code>function-permission-level=2</code> in <code>server.properties</code>. The final integration reference may contain spaces. Only award a badge after your datapack or quest system has validated its own progression condition.</p>
           <div class="command"><code>/pokebadges give &lt;targets&gt; &lt;badge&gt;</code><p>Gives the physical badge item to player inventory. It does not directly register Badge Box progression.</p></div>
           <div class="command"><code>/pokebadges give_region &lt;targets&gt; &lt;region&gt;</code><p>Directly awards every active badge in the selected region to the target players.</p></div>
-          <div class="command"><code>/pokebadges clear &lt;targets&gt;</code><p>Clears all current and historical backup badge data for the target players.</p></div>
-          <div class="command"><code>/pokebadges clear_region &lt;targets&gt; &lt;region&gt;</code><p>Clears current and historical backup data for one region.</p></div>
+          <div class="command"><code>/pokebadges admin clear &lt;targets&gt;</code><p>Clears current and recovery backup badge data for the target players but keeps permanent first-acquisition metadata.</p></div>
+          <div class="command"><code>/pokebadges admin clear_region &lt;targets&gt; &lt;region&gt;</code><p>Clears current and recovery backup data for one region but keeps permanent first-acquisition metadata.</p></div>
 
           <h2>Accepted badge IDs</h2>
           <p>Badge arguments accept either the full identifier such as <code>pokebadges:toxic_unova_badge</code> or the short path <code>toxic_unova_badge</code>. Command suggestions use the shorter form.</p>
@@ -299,7 +314,8 @@ strict_badge_mode=false
 backup_command_cooldown_seconds=30
 unova_badge_set=black_white_2
 hide_disabled_unova_badges_in_creative_tab=false
-external_open_requires_badge_box=false</code></pre>
+external_open_requires_badge_box=false
+badge_history_limit_per_player=500</code></pre>
 
           <table>
             <thead><tr><th>Setting</th><th>Default</th><th>Behavior</th></tr></thead>
@@ -310,14 +326,24 @@ external_open_requires_badge_box=false</code></pre>
               <tr><td><code>unova_badge_set</code></td><td><code>black_white_2</code></td><td>Selects the active eight-badge Unova set. Valid values are <code>black_white_1</code> and <code>black_white_2</code>.</td></tr>
               <tr><td><code>hide_disabled_unova_badges_in_creative_tab</code></td><td><code>false</code></td><td>Hides the inactive Unova set from creative inventory when enabled.</td></tr>
               <tr><td><code>external_open_requires_badge_box</code></td><td><code>false</code></td><td>Controls whether commands and integration APIs need the player to physically own a Badge Box.</td></tr>
+              <tr><td><code>badge_history_limit_per_player</code></td><td><code>500</code></td><td>Maximum retained recent history events per player; accepts 0–10000. Zero disables history only, not recovery backups or permanent acquisition metadata.</td></tr>
             </tbody>
           </table>
 
           <h2>Client configuration</h2>
           <pre><code>config/pokebadges/pokebadges-client.cfg</code></pre>
           <pre><code>// PokeBadges client config
-badge_discovery_popups=true</code></pre>
-          <p><code>badge_discovery_popups</code> controls the custom first-time badge registration popup. The legacy <code>config/pokebadges-client.cfg</code> location is migrated automatically.</p>
+notification_mode=AUTO</code></pre>
+          <table>
+            <thead><tr><th>Mode</th><th>Behavior</th></tr></thead>
+            <tbody>
+              <tr><td><code>AUTO</code></td><td>Uses Fancy Toasts when its API accepts the toast; otherwise uses the original popup. This is the default.</td></tr>
+              <tr><td><code>ORIGINAL</code></td><td>Uses only the original PokeBadges popup.</td></tr>
+              <tr><td><code>FANCY_TOASTS</code></td><td>Uses Fancy Toasts when available; falls back to the original popup when unavailable or incompatible.</td></tr>
+              <tr><td><code>DISABLED</code></td><td>Shows no badge discovery notification.</td></tr>
+            </tbody>
+          </table>
+          <p>Fancy Toasts filters are respected: a filtered toast does not reappear as the original popup. The previous <code>badge_discovery_popups=false</code> migrates to <code>DISABLED</code>; <code>true</code> migrates to <code>AUTO</code>. An explicit <code>notification_mode</code> takes precedence. The legacy <code>config/pokebadges-client.cfg</code> location is migrated automatically.</p>
 
           <div class="hint hint-info">
             <strong>Reloading</strong>
@@ -329,7 +355,7 @@ badge_discovery_popups=true</code></pre>
           <div class="page-heading">
             <span class="page-kicker">Developers</span>
             <h1>Integration API</h1>
-            <p class="page-description">PokeBadges v2 exposes a small public server-side API so other mods and server systems can work with Badge Box progression without touching saved data directly.</p>
+            <p class="page-description">PokeBadges v2.1.1 exposes a public server-side API so other mods and server systems can work with Badge Box progression without touching saved data directly.</p>
           </div>
 
           <h2>Public entry point</h2>
@@ -340,13 +366,19 @@ badge_discovery_popups=true</code></pre>
             <thead><tr><th>Method</th><th>Return type</th><th>Purpose</th></tr></thead>
             <tbody>
               <tr><td><code>openBadgeBox(player)</code></td><td><code>boolean</code></td><td>Opens the full Badge Box. Returns false if server rules require a physical Badge Box and the player does not have one.</td></tr>
-              <tr><td><code>awardBadge(player, badgeId)</code></td><td><code>BadgeOperationResult</code></td><td>Adds the badge to current progress and historical backup.</td></tr>
+              <tr><td><code>awardBadge(player, badgeId)</code></td><td><code>BadgeOperationResult</code></td><td>Adds an official badge to current progress and recovery backup.</td></tr>
+              <tr><td><code>awardBadge(player, badgeId, context)</code></td><td><code>BadgeOperationResult</code></td><td>Awards an official badge and records caller-supplied provenance.</td></tr>
+              <tr><td><code>depositBadge(player, stack, context)</code></td><td><code>BadgeOperationResult</code></td><td>Deposits an official badge item with provenance.</td></tr>
               <tr><td><code>hasBadge(player, badgeId)</code></td><td><code>BadgeOperationResult</code></td><td>Returns <code>SUCCESS</code> when the player currently owns the badge.</td></tr>
               <tr><td><code>removeBadge(player, badgeId)</code></td><td><code>BadgeOperationResult</code></td><td>Removes the badge from current progress while keeping historical backup.</td></tr>
               <tr><td><code>restoreBadge(player, badgeId)</code></td><td><code>BadgeOperationResult</code></td><td>Restores a badge from historical backup into current progress.</td></tr>
               <tr><td><code>getOwnedBadges(player)</code></td><td><code>Set&lt;ResourceLocation&gt;</code></td><td>Returns current owned badge IDs.</td></tr>
               <tr><td><code>getBackupBadges(player)</code></td><td><code>Set&lt;ResourceLocation&gt;</code></td><td>Returns historical backup badge IDs.</td></tr>
               <tr><td><code>isRegionCompleted(player, regionId)</code></td><td><code>BadgeOperationResult</code></td><td>Returns <code>SUCCESS</code> when every active badge slot in the region is complete.</td></tr>
+              <tr><td><code>getRegionStatus(player, regionId)</code></td><td><code>Optional&lt;BadgeRegionStatus&gt;</code></td><td>Returns the current status for an official region.</td></tr>
+              <tr><td><code>getProgress(player)</code></td><td><code>BadgeBoxProgress</code></td><td>Returns the current progression snapshot.</td></tr>
+              <tr><td><code>getAcquisitionMetadata(player, badgeId)</code></td><td><code>Optional&lt;BadgeAcquisitionMetadata&gt;</code></td><td>Reads permanent first-acquisition provenance.</td></tr>
+              <tr><td><code>getHistory(player, badgeId, limit)</code></td><td><code>List&lt;BadgeHistoryEvent&gt;</code></td><td>Reads retained recent history for that player.</td></tr>
             </tbody>
           </table>
 
@@ -371,6 +403,21 @@ if (result == BadgeOperationResult.SUCCESS) {
 boolean completed = PokeBadgesApi.isRegionCompleted(player, kanto)
     == BadgeOperationResult.SUCCESS;</code></pre>
 
+          <h2>Server-side award with provenance</h2>
+          <pre><code>BadgeActionContext context = new BadgeActionContext(
+    BadgeActionSource.ARENA,
+    "cities:kanto_pewter",
+    actor.getUUID(),
+    actor.getGameProfile().getName(),
+    "cities:pewter_gym"
+);
+BadgeOperationResult result = PokeBadgesApi.awardBadge(
+    player,
+    ResourceLocation.fromNamespaceAndPath("pokebadges", "boulder_kanto_badge"),
+    context
+);</code></pre>
+          <p>Call player-data operations on the logical server thread. Sources include <code>MANUAL_DEPOSIT</code>, <code>MANUAL_WITHDRAWAL</code>, <code>COMMAND</code>, <code>API</code>, <code>ARENA</code>, <code>QUEST</code>, <code>RESTORE</code>, <code>ADMIN</code> and <code>UNKNOWN</code>. Missing legacy values remain unknown.</p>
+
           <h2>Operation results</h2>
           <table>
             <thead><tr><th>Result</th><th>Meaning</th></tr></thead>
@@ -389,7 +436,9 @@ boolean completed = PokeBadgesApi.isRegionCompleted(player, kanto)
           <h2>Integration rules</h2>
           <ul>
             <li>Use <code>PokeBadgesApi</code> instead of reading or modifying <code>BadgeBoxSavedData</code> directly.</li>
-            <li>Badge IDs are normal Minecraft <code>ResourceLocation</code> item IDs.</li>
+            <li>Only registered official PokeBadges badge IDs are accepted; the API does not register custom badges.</li>
+            <li>Player-data operations must run on the logical server thread.</li>
+            <li>PokeBadges does not award badges for generic Cobblemon battles. Your integration must validate an arena, quest or reward condition.</li>
             <li>Region IDs use the <code>pokebadges</code> namespace, for example <code>pokebadges:kanto</code>.</li>
             <li>API award, remove and restore operations emit the corresponding public event callbacks.</li>
           </ul>
@@ -444,15 +493,18 @@ AutoCloseable badgeListener = PokeBadgesEvents.registerBadgeAwarded(event -> {
           <h2>Action sources</h2>
           <p><code>BadgeActionSource</code> tells integrations where the progression change originated:</p>
           <pre><code>MANUAL_DEPOSIT
+MANUAL_WITHDRAWAL
 COMMAND
 API
+ARENA
+QUEST
 RESTORE
 ADMIN
 UNKNOWN</code></pre>
 
           <div class="hint hint-info">
-            <strong>Listener lifecycle</strong>
-            <p>Every registration method returns an <code>AutoCloseable</code>. Keep that handle and close it when your integration unloads to remove the listener cleanly.</p>
+            <strong>Listener lifecycle and errors</strong>
+            <p>Every registration method returns an <code>AutoCloseable</code>. Keep that handle and close it when your integration unloads. A listener's <code>RuntimeException</code> or <code>LinkageError</code> is logged once per event type and listener class; other listeners continue and the completed badge operation is not rolled back.</p>
           </div>
         </section>
 
@@ -483,7 +535,7 @@ UNKNOWN</code></pre>
           </ol>
 
           <h2>Does PokeBadges require Cobblemon or Pixelmon?</h2>
-          <p>No hard dependency is declared for either project. PokeBadges is built as a standalone badge progression layer and is designed to fit Pokémon-focused environments.</p>
+          <p>No hard dependency is declared for either project. PokeBadges does not award badges after generic wild, player or NPC Cobblemon battles; an arena or quest integration must validate the win and then use the API or permission-level 2 command.</p>
 
           <h2>Where should integrations hook progression?</h2>
           <p>Use <code>PokeBadgesApi</code> for writes and checks, then subscribe to <code>PokeBadgesEvents</code> when your mod needs to react to progression changes. Avoid writing directly to internal SavedData classes.</p>
