@@ -207,7 +207,7 @@
           </ul>
 
           <h2>Optional integrations</h2>
-          <p>Accessories, Curios, Cobblemon and Fancy Toasts remain optional. PokeBadges does not assign badges after generic Cobblemon battles. An arena or quest integration must validate its own server-side condition before using the API or award command.</p>
+          <p>Accessories and Curios remain optional. Cobblemon itself is optional; when it is installed, PokeBadges requires OS Cobblemon Library (<code>os_cobblemon_library</code>). Fancy Toasts remains optional. PokeBadges does not assign badges after generic Cobblemon battles. An arena or quest integration must validate its own server-side condition before using the API or award command.</p>
           <p>When another NeoForge mod requires owo-lib on Minecraft 1.21.1, use owo-lib 0.12.15.6-beta.1 or a compatible newer build with NeoForge 21.1.262.</p>
 
           <h2>Opening the Badge Box</h2>
@@ -535,7 +535,7 @@ UNKNOWN</code></pre>
           </ol>
 
           <h2>Does PokeBadges require Cobblemon or Pixelmon?</h2>
-          <p>No hard dependency is declared for either project. PokeBadges does not award badges after generic wild, player or NPC Cobblemon battles; an arena or quest integration must validate the win and then use the API or permission-level 2 command.</p>
+          <p>Cobblemon and Pixelmon themselves are not mandatory. If Cobblemon is installed, PokeBadges requires OS Cobblemon Library (<code>os_cobblemon_library</code>). PokeBadges does not award badges after generic wild, player or NPC Cobblemon battles; an arena or quest integration must validate the win and then use the API or permission-level 2 command.</p>
 
           <h2>Where should integrations hook progression?</h2>
           <p>Use <code>PokeBadgesApi</code> for writes and checks, then subscribe to <code>PokeBadgesEvents</code> when your mod needs to react to progression changes. Avoid writing directly to internal SavedData classes.</p>
