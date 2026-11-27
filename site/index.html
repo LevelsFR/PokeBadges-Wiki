@@ -207,7 +207,7 @@
           </ul>
 
           <h2>Optional integrations</h2>
-          <p>Accessories and Curios remain optional. Cobblemon itself is optional; when it is installed, PokeBadges requires OS Cobblemon Library (<code>os_cobblemon_library</code>). Fancy Toasts remains optional. PokeBadges does not assign badges after generic Cobblemon battles. An arena or quest integration must validate its own server-side condition before using the API or award command.</p>
+          <p>Accessories and Curios remain optional. Cobblemon itself is optional; when it is installed, PokeBadges requires OS Cobblemon Library (<code>os_cobblemon_library</code>). Fancy Toasts remains optional; the integration targets its 1.5.1+ compatible client API. PokeBadges does not assign badges after generic Cobblemon battles. An arena or quest integration must validate its own server-side condition before using the API or award command.</p>
           <p>When another NeoForge mod requires owo-lib on Minecraft 1.21.1, use owo-lib 0.12.15.6-beta.1 or a compatible newer build with NeoForge 21.1.262.</p>
 
           <h2>Opening the Badge Box</h2>
@@ -343,7 +343,7 @@ notification_mode=AUTO</code></pre>
               <tr><td><code>DISABLED</code></td><td>Shows no badge discovery notification.</td></tr>
             </tbody>
           </table>
-          <p>Fancy Toasts filters are respected: a filtered toast does not reappear as the original popup. The previous <code>badge_discovery_popups=false</code> migrates to <code>DISABLED</code>; <code>true</code> migrates to <code>AUTO</code>. An explicit <code>notification_mode</code> takes precedence. Values are case-insensitive; invalid values fall back to AUTO. The legacy <code>config/pokebadges-client.cfg</code> location is migrated automatically.</p>
+          <p>If Fancy Toasts throws while accepting a notification, PokeBadges suppresses a duplicate fallback because the toast may already have been queued. Fancy Toasts filters are respected: a filtered toast does not reappear as the original popup. The previous <code>badge_discovery_popups=false</code> migrates to <code>DISABLED</code>; <code>true</code> migrates to <code>AUTO</code>. An explicit <code>notification_mode</code> takes precedence. Values are case-insensitive; invalid values fall back to AUTO. The legacy <code>config/pokebadges-client.cfg</code> location is migrated automatically.</p>
 
           <div class="hint hint-info">
             <strong>Reloading</strong>
