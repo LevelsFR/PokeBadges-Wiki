@@ -286,7 +286,7 @@
           <div class="command"><code>/pokebadges admin award &lt;targets&gt; &lt;badge&gt; [origin] [integration_reference]</code><p>Directly registers an official badge in current progress and recovery backup. Optional origin and integration reference are recorded as provenance; the action source remains COMMAND. The default origin is command:award. The command requires permission level 2; its original two-argument form still works.</p></div>
           <pre><code># Datapack function, such as an advancement reward function
 pokebadges admin award @s boulder_kanto_badge cities_kanto_pewter cities:pewter_gym</code></pre>
-          <p>The function source needs <code>function-permission-level=2</code> in <code>server.properties</code>. The final integration reference may contain spaces. Only award a badge after your datapack or quest system has validated its own progression condition.</p>
+          <p>The function source needs <code>function-permission-level=2</code> or higher in <code>server.properties</code>. The final integration reference may contain spaces. Only award a badge after your datapack or quest system has validated its own progression condition.</p>
           <div class="command"><code>/pokebadges give &lt;targets&gt; &lt;badge&gt;</code><p>Gives the physical badge item to player inventory. It does not directly register Badge Box progression.</p></div>
           <div class="command"><code>/pokebadges give_region &lt;targets&gt; &lt;region&gt;</code><p>Directly awards every active badge in the selected region to the target players.</p></div>
           <div class="command"><code>/pokebadges clear &lt;targets&gt;</code><p>Clears current and recovery backup badge data for the target players but keeps permanent first-acquisition metadata.</p></div>
@@ -439,7 +439,7 @@ BadgeOperationResult result = PokeBadgesApi.awardBadge(
             <li>Only registered official PokeBadges badge IDs are accepted; the API does not register custom badges.</li>
             <li>Player-data operations must run on the logical server thread.</li>
             <li>PokeBadges does not award badges for generic Cobblemon battles. Your integration must validate an arena, quest or reward condition.</li>
-            <li>Region IDs use the <code>pokebadges</code> namespace, for example <code>pokebadges:kanto</code>.</li>
+            <li>Region command arguments use short IDs such as <code>kanto</code>, without a namespace.</li>
             <li>API award, remove and restore operations emit the corresponding public event callbacks.</li>
           </ul>
         </section>
