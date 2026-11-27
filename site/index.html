@@ -118,8 +118,8 @@
           </div>
 
           <div class="hint hint-info">
-            <strong>This wiki documents the v2.1.1 development branch.</strong>
-            <p>CurseForge and Modrinth may continue to show the earlier public release until v2.1.1 is published.</p>
+            <strong>This wiki documents the released v2.1.1.</strong>
+            <p>A v2.1.2 command parsing fix is in preparation; the examples below remain compatible with v2.1.1.</p>
           </div>
 
           <h2>What does PokeBadges do?</h2>
@@ -245,10 +245,10 @@
             </tbody>
           </table>
 
-          <p>Removing a badge through the public remove operation only removes it from current progress. Its recovery backup remains available. <code>/pokebadges admin clear</code> and <code>/pokebadges admin clear_region</code> remove current and backup data in their scope while keeping permanent first-acquisition metadata.</p>
+          <p>Removing a badge through the public remove operation only removes it from current progress. Its recovery backup remains available. <code>/pokebadges clear</code> and <code>/pokebadges clear_region</code> remove current and backup data in their scope while keeping permanent first-acquisition metadata.</p>
 
           <h2>Migration from v2.1</h2>
-          <p>Version 2.1.1 writes saved-data format 3 and keeps player UUIDs, current badges, recovery backups, known timestamps, recent history and data found in other dimensions. It restores provenance from a v2.1 award or deposit event only when the event's positive obtained timestamp matches the earliest known current or backup timestamp. Missing or unmatched values stay unknown.</p>
+          <p>Version 2.1.1 writes saved-data format 3 and keeps player UUIDs, current badges, recovery backups, known timestamps, recent history and data found in other dimensions. It restores provenance from a v2.1 award or deposit event only when the event's positive obtained timestamp matches the earliest known current or backup timestamp. Missing or unmatched values stay unknown. Older v2.0 data without matching provenance cannot reconstruct an original acquisition source.</p>
           <p>Older versions do not preserve the new acquisition metadata if they save the world after a downgrade. Back up the world before downgrading.</p>
 
           <h2>Unova mode</h2>
@@ -283,17 +283,17 @@
           <div class="command"><code>/pokebadges admin audit &lt;player&gt;</code><p>Compares current progression with historical backup and reports differences.</p></div>
           <div class="command"><code>/pokebadges admin restore &lt;player&gt;</code><p>Restores missing current badges from the player's historical backup.</p></div>
           <div class="command"><code>/pokebadges admin open &lt;targets&gt;</code><p>Opens the Badge Box for one or more players through the external-open path.</p></div>
-          <div class="command"><code>/pokebadges admin award &lt;targets&gt; &lt;badge&gt; [origin] [integration_reference]</code><p>Directly registers an official badge in current progress and recovery backup. Optional origin and integration reference are recorded as provenance. The command requires permission level 2; its original two-argument form still works.</p></div>
+          <div class="command"><code>/pokebadges admin award &lt;targets&gt; &lt;badge&gt; [origin] [integration_reference]</code><p>Directly registers an official badge in current progress and recovery backup. Optional origin and integration reference are recorded as provenance; the action source remains COMMAND. The default origin is command:award. The command requires permission level 2; its original two-argument form still works.</p></div>
           <pre><code># Datapack function, such as an advancement reward function
-pokebadges admin award @s boulder_kanto_badge cities:kanto_pewter cities:pewter_gym</code></pre>
+pokebadges admin award @s boulder_kanto_badge cities_kanto_pewter cities:pewter_gym</code></pre>
           <p>The function source needs <code>function-permission-level=2</code> in <code>server.properties</code>. The final integration reference may contain spaces. Only award a badge after your datapack or quest system has validated its own progression condition.</p>
           <div class="command"><code>/pokebadges give &lt;targets&gt; &lt;badge&gt;</code><p>Gives the physical badge item to player inventory. It does not directly register Badge Box progression.</p></div>
           <div class="command"><code>/pokebadges give_region &lt;targets&gt; &lt;region&gt;</code><p>Directly awards every active badge in the selected region to the target players.</p></div>
-          <div class="command"><code>/pokebadges admin clear &lt;targets&gt;</code><p>Clears current and recovery backup badge data for the target players but keeps permanent first-acquisition metadata.</p></div>
-          <div class="command"><code>/pokebadges admin clear_region &lt;targets&gt; &lt;region&gt;</code><p>Clears current and recovery backup data for one region but keeps permanent first-acquisition metadata.</p></div>
+          <div class="command"><code>/pokebadges clear &lt;targets&gt;</code><p>Clears current and recovery backup badge data for the target players but keeps permanent first-acquisition metadata.</p></div>
+          <div class="command"><code>/pokebadges clear_region &lt;targets&gt; &lt;region&gt;</code><p>Clears current and recovery backup data for one region but keeps permanent first-acquisition metadata.</p></div>
 
           <h2>Accepted badge IDs</h2>
-          <p>Badge arguments accept either the full identifier such as <code>pokebadges:toxic_unova_badge</code> or the short path <code>toxic_unova_badge</code>. Command suggestions use the shorter form.</p>
+          <p>In v2.1.1, use short badge IDs such as <code>toxic_unova_badge</code> for award and audit history. Use a single unquoted origin without colons (for example <code>cities_kanto_pewter</code>); the final integration reference can contain colons and spaces. The give command also accepts full IDs. Command suggestions use the shorter form.</p>
         </section>
 
         <section class="tab-panel" id="configuration" data-panel="configuration">
@@ -343,7 +343,7 @@ notification_mode=AUTO</code></pre>
               <tr><td><code>DISABLED</code></td><td>Shows no badge discovery notification.</td></tr>
             </tbody>
           </table>
-          <p>Fancy Toasts filters are respected: a filtered toast does not reappear as the original popup. The previous <code>badge_discovery_popups=false</code> migrates to <code>DISABLED</code>; <code>true</code> migrates to <code>AUTO</code>. An explicit <code>notification_mode</code> takes precedence. The legacy <code>config/pokebadges-client.cfg</code> location is migrated automatically.</p>
+          <p>Fancy Toasts filters are respected: a filtered toast does not reappear as the original popup. The previous <code>badge_discovery_popups=false</code> migrates to <code>DISABLED</code>; <code>true</code> migrates to <code>AUTO</code>. An explicit <code>notification_mode</code> takes precedence. Values are case-insensitive; invalid values fall back to AUTO. The legacy <code>config/pokebadges-client.cfg</code> location is migrated automatically.</p>
 
           <div class="hint hint-info">
             <strong>Reloading</strong>
@@ -416,7 +416,7 @@ BadgeOperationResult result = PokeBadgesApi.awardBadge(
     ResourceLocation.fromNamespaceAndPath("pokebadges", "boulder_kanto_badge"),
     context
 );</code></pre>
-          <p>Call player-data operations on the logical server thread. Sources include <code>MANUAL_DEPOSIT</code>, <code>MANUAL_WITHDRAWAL</code>, <code>COMMAND</code>, <code>API</code>, <code>ARENA</code>, <code>QUEST</code>, <code>RESTORE</code>, <code>ADMIN</code> and <code>UNKNOWN</code>. Missing legacy values remain unknown.</p>
+          <p>Call player-data operations on the logical server thread. Sources include <code>MANUAL_DEPOSIT</code>, <code>MANUAL_WITHDRAWAL</code>, <code>COMMAND</code>, <code>API</code>, <code>ARENA</code>, <code>QUEST</code>, <code>RESTORE</code>, <code>ADMIN</code> and <code>UNKNOWN</code>. Missing legacy values remain unknown: an unknown acquisition timestamp is represented by zero and optional provenance fields may be null.</p>
 
           <h2>Operation results</h2>
           <table>
